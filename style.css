@@ -1,0 +1,90 @@
+:root {
+  --bg: #0b0d10;
+  --panel: #12161b;
+  --line: #232a33;
+  --text: #d7dee7;
+  --dim: #7b8794;
+  --accent: #6ee7b7;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(circle at 50% 0%, #151a20 0%, var(--bg) 60%);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  line-height: 1.6;
+}
+
+.shell {
+  width: 100%;
+  max-width: 560px;
+}
+
+.tag {
+  font: 500 12px/1 ui-monospace, "Cascadia Mono", monospace;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-size: clamp(28px, 6vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.lede {
+  margin-top: 12px;
+  color: var(--dim);
+  font-size: 15px;
+}
+
+.panel {
+  margin-top: 36px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 18px;
+  font-size: 14px;
+}
+
+.row + .row {
+  border-top: 1px solid var(--line);
+}
+
+.key {
+  color: var(--dim);
+}
+
+.val {
+  font-family: ui-monospace, "Cascadia Mono", monospace;
+  font-size: 13px;
+  text-align: right;
+}
+
+.ok {
+  color: var(--accent);
+}
+
+footer {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--dim);
+  font-family: ui-monospace, "Cascadia Mono", monospace;
+}
