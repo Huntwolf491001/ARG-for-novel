@@ -774,3 +774,104 @@ table.gov th {
   color: #333;
   line-height: 1.6;
 }
+
+.ticker {
+  background: #fffbeb;
+  border-bottom: 1px solid #e8d9a8;
+  height: 30px;
+  display: flex;
+  overflow: hidden;
+}
+
+.ticker-label {
+  background: #c8281f;
+  color: #fff;
+  font-size: 12px;
+  padding: 0 11px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  letter-spacing: 1px;
+}
+
+.ticker-body {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 30px;
+}
+
+.ticker-body span {
+  position: absolute;
+  white-space: nowrap;
+  font-size: 12.5px;
+  color: #7a5500;
+  line-height: 30px;
+  animation: tickmove 34s linear infinite;
+}
+
+@keyframes tickmove {
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
+}
+
+.banner .arrow {
+  position: absolute;
+  top: 50%;
+  margin-top: -22px;
+  width: 26px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  z-index: 3;
+  cursor: pointer;
+  user-select: none;
+  font-family: SimSun, serif;
+}
+
+.banner .arrow:hover {
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.banner .arrow.l { left: 0; }
+.banner .arrow.r { right: 0; }
+
+.counter {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 11px;
+  color: #7d8b9c;
+  letter-spacing: 0.5px;
+}
+
+.counter b {
+  color: #c8281f;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.page-num {
+  text-align: center;
+  font-size: 12.5px;
+  color: #5c6672;
+  padding: 16px 0 4px;
+}
+
+.page-num a, .page-num span {
+  display: inline-block;
+  min-width: 22px;
+  padding: 2px 7px;
+  border: 1px solid #c9d2de;
+  margin: 0 2px;
+  text-align: center;
+  background: #f7f9fc;
+}
+
+.page-num span.cur {
+  background: #1b4b8f;
+  color: #fff;
+  border-color: #1b4b8f;
+}

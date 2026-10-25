@@ -79,4 +79,26 @@
 
   pop.querySelector('.ad-x').addEventListener('click', function () { close(pop); });
   pop2.querySelector('.ad-x').addEventListener('click', function () { close(pop2); });
+
+  var tip = null;
+  var tipTimer = null;
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href="#"]') : null;
+    if (!a) return;
+    e.preventDefault();
+    if (!tip) {
+      tip = document.createElement('div');
+      tip.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);' +
+        'background:#2b2b2b;color:#e8dcc0;border:1px solid #7a6a4a;padding:14px 26px;' +
+        'font-size:13px;z-index:9999;font-family:"Microsoft YaHei",sans-serif;' +
+        'box-shadow:0 3px 16px rgba(0,0,0,.4);letter-spacing:1px;';
+      tip.textContent = '该功能正在升级中，敬请期待。';
+      document.body.appendChild(tip);
+      tip.style.display = 'none';
+    }
+    tip.style.display = 'block';
+    clearTimeout(tipTimer);
+    tipTimer = setTimeout(function () { tip.style.display = 'none'; }, 1600);
+  });
 })();
