@@ -809,12 +809,13 @@ table.gov th {
   font-size: 12.5px;
   color: #7a5500;
   line-height: 30px;
-  animation: tickmove 34s linear infinite;
+  left: 100%;
+  animation: tickmove 38s linear infinite;
 }
 
 @keyframes tickmove {
-  0% { transform: translateX(100vw); }
-  100% { transform: translateX(-100%); }
+  0% { left: 100%; }
+  100% { left: -130%; }
 }
 
 .banner .arrow {
@@ -876,4 +877,335 @@ table.gov th {
   background: #1b4b8f;
   color: #fff;
   border-color: #1b4b8f;
+}
+
+@media (max-width: 820px) {
+  .wrap {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .topbar {
+    font-size: 11px;
+    line-height: 26px;
+  }
+
+  .topbar .wrap {
+    flex-wrap: wrap;
+  }
+
+  .head .wrap {
+    height: auto;
+    padding: 12px 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .brand {
+    gap: 10px;
+  }
+
+  .emblem {
+    width: 50px;
+    height: 50px;
+  }
+
+  .brand-t {
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+
+  .brand-s {
+    font-size: 9px;
+  }
+
+  .search {
+    width: 100%;
+  }
+
+  .search input {
+    flex: 1;
+    width: auto;
+  }
+
+  .nav .wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav .wrap::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav a {
+    padding: 0 15px;
+    font-size: 13.5px;
+    line-height: 40px;
+    white-space: nowrap;
+  }
+
+  .crumb {
+    font-size: 11.5px;
+    padding: 6px 0;
+  }
+
+  .main {
+    padding: 12px 10px 20px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .banner {
+    height: 186px;
+    padding: 16px;
+  }
+
+  .banner h2 {
+    font-size: 17px;
+    line-height: 1.4;
+  }
+
+  .banner p {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .banner .arrow {
+    width: 22px;
+    height: 36px;
+    margin-top: -18px;
+    font-size: 14px;
+  }
+
+  .special {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .special a {
+    padding: 9px 6px;
+    font-size: 12px;
+  }
+
+  .cols {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .serv {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .serv a {
+    padding: 12px 4px;
+    font-size: 12.5px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .serv a:nth-child(3n) {
+    border-right: 0;
+  }
+
+  .serv a:nth-last-child(-n+3) {
+    border-bottom: 0;
+  }
+
+  .leaders {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .leader .ph {
+    width: 64px;
+    height: 84px;
+  }
+
+  table.gov th {
+    width: 82px;
+  }
+
+  table.gov th,
+  table.gov td {
+    padding: 7px 8px;
+    font-size: 12.5px;
+  }
+
+  .art h1 {
+    font-size: 18px;
+  }
+
+  .art p {
+    font-size: 15px;
+    line-height: 1.9;
+  }
+
+  .art .meta {
+    font-size: 11px;
+  }
+
+  .sec-t {
+    font-size: 15.5px;
+  }
+
+  .list-page li a {
+    font-size: 13.5px;
+  }
+
+  .list-page li time {
+    font-size: 11.5px;
+  }
+
+  .ticker {
+    height: 26px;
+  }
+
+  .ticker-label {
+    font-size: 11px;
+    padding: 0 8px;
+  }
+
+  .ticker-body {
+    height: 26px;
+  }
+
+  .ticker-body span {
+    line-height: 26px;
+    font-size: 11.5px;
+  }
+
+  .ad-pop {
+    width: 178px;
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .ad-pop .ad-bd {
+    min-height: 0;
+    padding: 7px 9px 8px;
+  }
+
+  .ad-pop .ad-bd b {
+    font-size: 12px;
+    margin-bottom: 3px;
+  }
+
+  .ad-pop .ad-bd p {
+    font-size: 11.5px;
+  }
+
+  .ad-pop .ad-nav {
+    padding: 0 9px 7px;
+  }
+
+  .ad-pop2 {
+    width: 148px;
+    left: 8px;
+    bottom: 8px;
+  }
+
+  .ad-pop2 .ad-bd {
+    min-height: 0;
+    padding: 7px 8px 8px;
+  }
+
+  .ad-pop2 .ad-bd p {
+    font-size: 11.5px;
+  }
+
+  .a11y-panel {
+    width: 232px;
+    right: 8px;
+    top: 72px;
+  }
+
+  .login-box {
+    width: 90%;
+    max-width: 360px;
+  }
+
+  .foot {
+    font-size: 11.5px;
+    padding: 14px 0 16px;
+  }
+
+  .foot .wrap {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .foot .links a {
+    margin-left: 0;
+    margin-right: 12px;
+  }
+
+  html.fs-1,
+  html.fs-2,
+  html.fs-3 {
+    zoom: 1 !important;
+  }
+
+  html.elder {
+    zoom: 1.03 !important;
+  }
+
+  html.elder .nav a {
+    font-size: 14px;
+    line-height: 42px;
+  }
+
+  html.elder .ad-pop,
+  html.elder .ad-pop2 {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-t {
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+
+  .brand-s {
+    display: none;
+  }
+
+  .serv {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .serv a:nth-child(3n) {
+    border-right: 1px solid var(--line);
+  }
+
+  .serv a:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .serv a:nth-last-child(-n+3) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .serv a:nth-last-child(-n+2) {
+    border-bottom: 0;
+  }
+
+  .ad-pop {
+    width: 160px;
+  }
+
+  .ad-pop2 {
+    width: 132px;
+  }
+
+  .banner {
+    height: 168px;
+  }
+
+  .banner h2 {
+    font-size: 15.5px;
+  }
 }

@@ -159,3 +159,45 @@ table.kv th {
   background: #e4ecf8;
   text-decoration: none;
 }
+
+@media (max-width: 820px) {
+  .pf-top {
+    height: auto;
+    padding: 8px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .pf-top b {
+    font-size: 13px;
+  }
+
+  .pf-bar {
+    flex-direction: column;
+    gap: 3px;
+    font-size: 11px;
+  }
+
+  .pf-wrap {
+    padding: 10px;
+  }
+
+  .tiles {
+    grid-template-columns: 1fr;
+  }
+
+  table.kv th {
+    width: 76px;
+  }
+
+  table.kv th,
+  table.kv td {
+    padding: 6px 8px;
+    font-size: 12.5px;
+  }
+
+  .tile em {
+    font-size: 20px;
+  }
+}

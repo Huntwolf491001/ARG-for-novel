@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1240">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>狰州市公安局</title>
 <meta name="description" content="狰州市公安局门户网站，发布警务动态、政务公开、办事服务与警民互动信息。">
 <link rel="stylesheet" href="/assets/css/site.css">
@@ -15,6 +15,7 @@
     <div>狰州市公安局门户网站</div>
     <div>
       <a href="#">无障碍浏览</a>
+      <a href="#">适老模式</a>
       <a href="#">繁體</a>
       <a href="#">警务通</a>
     </div>
@@ -128,13 +129,16 @@
 
     <div style="margin-top:10px;border:1px solid #c9d2de;background:#f7f9fc;padding:7px 10px;font-size:12.5px;color:#5c6672;">
       友情链接：
-      <select style="height:24px;font-size:12px;border:1px solid #c9d2de;color:#1c1c1c;margin-left:4px;">
-        <option>公安部</option>
-        <option>省公安厅</option>
-        <option>狰州市人民政府</option>
-        <option>猄都市公安局</option>
-        <option>虹狮湾警务联络处</option>
+      <select id="flink" style="height:24px;font-size:12px;border:1px solid #c9d2de;color:#1c1c1c;margin-left:4px;">
+        <option value="">-- 请选择 --</option>
+        <option value="/forum/">狰州民间消息论坛</option>
+        <option value="#">公安部</option>
+        <option value="#">省公安厅</option>
+        <option value="#">狰州市人民政府</option>
+        <option value="#">猄都市公安局</option>
+        <option value="#">虹狮湾警务联络处</option>
       </select>
+      <button type="button" onclick="var v=document.getElementById('flink').value;if(v)location.href=v;" style="height:24px;margin-left:4px;padding:0 10px;border:1px solid #9fb0c6;background:#f3f6fa;font-size:12px;font-family:inherit;cursor:pointer;">前往</button>
       <span style="float:right;">本站已支持 IPv6 访问</span>
     </div>
 

@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1240">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>内部信息平台 - 狰州市公安局</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="/assets/css/site.css">
@@ -30,7 +30,11 @@
 <script>
 (function () {
   var U = String.fromCharCode(48, 52, 49, 55);
-  var P = String.fromCharCode(48, 56, 49, 55);
+  var PS = [
+    String.fromCharCode(48, 56, 49, 55),
+    String.fromCharCode(56, 49, 55),
+    String.fromCharCode(50, 48, 50, 50, 48, 56, 49, 55)
+  ];
   var f = document.getElementById('f');
   var u = document.getElementById('user');
   var p = document.getElementById('pass');
@@ -41,7 +45,7 @@
     btn.disabled = true;
     var uv = u.value.trim();
     var pv = p.value.trim();
-    if (uv === U && pv === P) {
+    if (uv === U && PS.indexOf(pv) > -1) {
       location.href = '/archive/index.html';
       return;
     }
