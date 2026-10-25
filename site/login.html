@@ -6,51 +6,284 @@
 <title>内部信息平台 - 狰州市公安局</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="/assets/css/site.css">
+<style>
+  .appeal-note {
+    background: #fdf2f2;
+    border: 1px solid #e0bcbc;
+    color: #a02020;
+    font-size: 12.5px;
+    line-height: 1.8;
+    padding: 9px 11px;
+    margin-bottom: 16px;
+  }
+  .login-bd textarea {
+    width: 100%;
+    border: 1px solid #b9c6d8;
+    padding: 6px 8px;
+    font-size: 13px;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 14px;
+    outline: none;
+  }
+  .login-bd textarea:focus {
+    border-color: #2e6bb8;
+  }
+  .login-bd .btn-sec {
+    background: #f3f6fa;
+    color: #1b4b8f;
+    border: 1px solid #9fb0c6;
+    height: 32px;
+    width: 100%;
+    font-size: 13.5px;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: 2px;
+  }
+  .login-bd .btn-sec:hover {
+    background: #e6eefa;
+  }
+  .sub-hd {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1b4b8f;
+    border-bottom: 1px solid #dde3ea;
+    padding-bottom: 6px;
+    margin-bottom: 14px;
+  }
+  .ask {
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: #333;
+    margin-bottom: 14px;
+  }
+  .ask b {
+    font-family: Consolas, monospace;
+    color: #1b4b8f;
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+  .two-btn {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .two-btn button {
+    flex: 1;
+    height: 32px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid #9fb0c6;
+    background: #f3f6fa;
+    color: #1b4b8f;
+  }
+  .two-btn button:hover {
+    background: #e6eefa;
+  }
+  .tiny {
+    font-size: 11.5px;
+    color: #8a929c;
+    line-height: 1.8;
+    margin-top: 10px;
+  }
+</style>
 </head>
 <body>
 
 <div class="login-wrap">
   <div class="login-box">
+
     <div class="login-hd">狰州市公安局　内部信息平台</div>
+
     <div class="login-bd">
-      <div id="err" class="err" style="display:none;">该账号已停用，请联系管理员</div>
-      <form id="f" onsubmit="return false">
+
+      <div id="err" class="err" style="display:none;"></div>
+
+      <div id="step1">
         <label for="user">警　　号</label>
-        <input id="user" type="text" autocomplete="off" maxlength="10">
+        <input id="user" type="text" autocomplete="off" maxlength="5" inputmode="numeric" placeholder="5 位数字" oninput="this.value=this.value.replace(/\D/g,'')">
         <label for="pass">密　　码</label>
-        <input id="pass" type="password" autocomplete="off" maxlength="20">
-        <button id="btn" type="submit">登 录</button>
-      </form>
-      <div class="login-tip">本系统仅限在职民警使用，操作留痕。</div>
-      <div class="login-tip">忘记密码？请联系档案室内线 8041。</div>
+        <input id="pass" type="password" autocomplete="off" maxlength="8" placeholder="8 位数字">
+        <button id="btnLogin" type="button">登 录</button>
+        <div class="login-tip" style="margin-top:14px;font-size:12px;">
+          <a href="#" id="forgot" style="color:#1b4b8f;">忘记密码？申请人工核验</a>
+        </div>
+      </div>
+
+      <div id="step2" style="display:none;">
+        <div class="sub-hd">身份核验</div>
+        <div class="ask">该账号登记的联系方式为 <b>138 7419 362</b>。<br>该号码是否仍在使用？</div>
+        <div class="two-btn">
+          <button type="button" id="useYes">仍在使用</button>
+          <button type="button" id="useNo">已停用</button>
+        </div>
+        <div class="tiny">如登记号码有误，请选择「已停用」进入个人验证。</div>
+      </div>
+
+      <div id="step3a" style="display:none;">
+        <div class="sub-hd">短信验证</div>
+        <p class="ask">验证码已发送至 <b>138 7419 362</b>，请查收。</p>
+        <p class="tiny" style="margin-bottom:14px;">验证码 10 分钟内有效。如长时间未收到，请检查手机信号或稍后重试。</p>
+        <button type="button" class="btn-sec" id="resend">重新发送</button>
+        <div style="height:8px;"></div>
+        <button type="button" class="btn-sec" id="backA">返　回</button>
+      </div>
+
+      <div id="step3b" style="display:none;">
+        <div class="sub-hd">个人验证</div>
+        <div class="ask">请回答以下验证问题：</div>
+        <label for="answer">您儿子的姓名</label>
+        <input id="answer" type="text" autocomplete="off" maxlength="10">
+        <button type="button" id="btnAnswer">提　交</button>
+        <div style="height:8px;"></div>
+        <button type="button" class="btn-sec" id="backB">返　回</button>
+      </div>
+
+      <div id="appealBox" style="display:none;">
+        <div class="sub-hd">申诉通道</div>
+        <div class="appeal-note">该账号已停用，无法正常登录。<br>如需查阅本人历史业务数据，可通过申诉通道提交申请，经二次验证后以受限方式访问。</div>
+        <label for="pass2">二级密码</label>
+        <input id="pass2" type="password" autocomplete="off" maxlength="8" placeholder="二级密码">
+        <label for="reason">申诉理由（选填）</label>
+        <textarea id="reason" rows="3"></textarea>
+        <button id="btnAppeal" type="button">提交申诉</button>
+      </div>
+
+      <div class="login-tip" style="margin-top:16px;">本系统仅限在职民警使用，操作留痕。</div>
+
     </div>
   </div>
 </div>
 
 <script>
 (function () {
-  var U = String.fromCharCode(48, 52, 49, 55);
-  var PS = [
-    String.fromCharCode(48, 56, 49, 55),
-    String.fromCharCode(56, 49, 55),
-    String.fromCharCode(50, 48, 50, 50, 48, 56, 49, 55)
-  ];
-  var f = document.getElementById('f');
-  var u = document.getElementById('user');
-  var p = document.getElementById('pass');
-  var err = document.getElementById('err');
-  var btn = document.getElementById('btn');
+  var U = String.fromCharCode(48, 48, 52, 49, 55);
+  var P1 = String.fromCharCode(50, 48, 48, 50, 48, 55, 49, 53);
+  var P2 = String.fromCharCode(49, 50, 51, 52, 53, 54, 55, 56);
+  var ANS = String.fromCharCode(29417, 19996);
 
-  f.addEventListener('submit', function () {
-    btn.disabled = true;
-    var uv = u.value.trim();
-    var pv = p.value.trim();
-    if (uv === U && PS.indexOf(pv) > -1) {
-      location.href = '/archive/index.html';
+  var el = function (id) { return document.getElementById(id); };
+
+  var err = el('err');
+  var step1 = el('step1');
+  var step2 = el('step2');
+  var step3a = el('step3a');
+  var step3b = el('step3b');
+  var appeal = el('appealBox');
+  var user = el('user');
+  var pass = el('pass');
+  var answer = el('answer');
+  var pass2 = el('pass2');
+
+  var steps = [step1, step2, step3a, step3b, appeal];
+
+  function showErr(msg) {
+    err.textContent = msg;
+    err.style.display = 'block';
+  }
+
+  function hideErr() {
+    err.style.display = 'none';
+  }
+
+  function only(node) {
+    for (var i = 0; i < steps.length; i++) {
+      steps[i].style.display = (steps[i] === node) ? 'block' : 'none';
+    }
+  }
+
+  function toAppeal() {
+    hideErr();
+    only(appeal);
+    pass2.focus();
+  }
+
+  el('btnLogin').addEventListener('click', function () {
+    var uv = user.value.trim();
+    var pv = pass.value.trim();
+
+    if (uv.length !== 5) {
+      showErr('警号应为五位数字');
+      user.focus();
       return;
     }
-    err.style.display = 'block';
-    btn.disabled = false;
+
+    if (uv !== U || pv !== P1) {
+      showErr('账号或密码错误');
+      return;
+    }
+
+    showErr('该账号已停用，请联系管理员');
+    only(appeal);
+    pass2.focus();
+  });
+
+  el('forgot').addEventListener('click', function (e) {
+    e.preventDefault();
+    var uv = user.value.trim();
+
+    if (uv.length !== 5) {
+      showErr('警号应为五位数字');
+      user.focus();
+      return;
+    }
+
+    if (uv !== U) {
+      showErr('未查询到该账号');
+      return;
+    }
+
+    hideErr();
+    only(step2);
+  });
+
+  el('useYes').addEventListener('click', function () {
+    hideErr();
+    only(step3a);
+  });
+
+  el('useNo').addEventListener('click', function () {
+    hideErr();
+    only(step3b);
+    answer.focus();
+  });
+
+  el('resend').addEventListener('click', function () {
+    showErr('验证码已重新发送至 138 7419 362。');
+  });
+
+  el('backA').addEventListener('click', function () {
+    hideErr();
+    only(step2);
+  });
+
+  el('backB').addEventListener('click', function () {
+    hideErr();
+    only(step2);
+    answer.value = '';
+  });
+
+  el('btnAnswer').addEventListener('click', function () {
+    var v = answer.value.trim().replace(/\s/g, '');
+    if (v !== ANS) {
+      showErr('验证信息有误，请重新输入');
+      answer.value = '';
+      answer.focus();
+      return;
+    }
+    toAppeal();
+  });
+
+  el('btnAppeal').addEventListener('click', function () {
+    var pv = pass2.value.trim();
+    if (pv !== P2) {
+      showErr('二级密码错误，请重新输入');
+      pass2.value = '';
+      pass2.focus();
+      return;
+    }
+    location.href = '/archive/index.html';
   });
 })();
 </script>
