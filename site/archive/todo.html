@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1240">
+<title>我的待办 - 内部信息平台</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="/assets/css/archive.css">
+</head>
+<body>
+
+<div class="pf-top">
+  <b>狰州市公安局　内部信息平台</b>
+  <span>当前用户：0417</span>
+</div>
+
+<div class="pf-bar">
+  <span><a href="/archive/index.html">返回首页</a>　|　我的待办</span>
+  <span>2032-10-25　18:20</span>
+</div>
+
+<div class="pf-wrap">
+
+  <div class="pf-card">
+    <div class="pf-card-h">待办事项（共 1 项）</div>
+    <div class="pf-card-b">
+      <table class="kv">
+        <tr><th>事项编号</th><td class="mono">DD-2022-0817</td></tr>
+        <tr><th>事项类型</th><td>申诉材料提交</td></tr>
+        <tr><th>关联案件</th><td class="mono">0714</td></tr>
+        <tr><th>发起时间</th><td class="mono">2022-08-18　09:12</td></tr>
+        <tr><th>截止时间</th><td class="mono">2022-08-21　23:59</td></tr>
+        <tr><th>当前状态</th><td class="warn">已逾期</td></tr>
+        <tr><th>备　　注</th><td>未提交</td></tr>
+      </table>
+
+      <p class="pf-note" style="margin-top:12px;">申诉材料应于截止时间前通过本系统提交。逾期未提交的，视为放弃申诉。</p>
+
+      <div style="margin-top:14px;">
+        <a href="#" class="pf-btn" id="submitBtn">提交申诉材料</a>
+      </div>
+
+      <div id="hint" style="display:none;margin-top:14px;padding:9px 12px;border:1px solid #e0c0c0;background:#fdf2f2;color:#a02020;font-size:12px;">
+        该事项已逾期，提交通道已关闭。
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('submitBtn').addEventListener('click', function (e) {
+  e.preventDefault();
+  document.getElementById('hint').style.display = 'block';
+});
+</script>
+
+</body>
+</html>
