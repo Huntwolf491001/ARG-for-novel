@@ -73,18 +73,20 @@ ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 92px;
+  height: 104px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .emblem {
-  width: 46px;
-  height: 52px;
+  width: 78px;
+  height: 78px;
+  object-fit: contain;
+  display: block;
 }
 
 .brand-t {

@@ -1,0 +1,300 @@
+.a11y-btn {
+  cursor: pointer;
+}
+
+.a11y-panel {
+  position: fixed;
+  right: 18px;
+  top: 118px;
+  width: 268px;
+  background: #fff;
+  border: 1px solid #9fb0c6;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.28);
+  z-index: 10000;
+  font-size: 13px;
+  font-family: "Microsoft YaHei", sans-serif;
+  display: none;
+}
+
+.a11y-panel.on {
+  display: block;
+}
+
+.a11y-hd {
+  background: linear-gradient(#2a5a9e, #1b4b8f);
+  color: #fff;
+  padding: 7px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.a11y-hd span {
+  font-size: 15px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 3px;
+}
+
+.a11y-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-bottom: 1px solid #e6eaef;
+  color: #333;
+}
+
+.a11y-row:last-of-type {
+  border-bottom: 0;
+}
+
+.a11y-seg {
+  display: flex;
+  border: 1px solid #9fb0c6;
+}
+
+.a11y-seg button {
+  width: 34px;
+  height: 26px;
+  border: 0;
+  border-right: 1px solid #9fb0c6;
+  background: #f3f6fa;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #333;
+}
+
+.a11y-seg button:last-child {
+  border-right: 0;
+}
+
+.a11y-seg button.on {
+  background: #1b4b8f;
+  color: #fff;
+}
+
+.a11y-sw {
+  width: 46px;
+  height: 22px;
+  border: 1px solid #9fb0c6;
+  background: #e9edf3;
+  position: relative;
+  cursor: pointer;
+}
+
+.a11y-sw::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  background: #8a929c;
+  transition: left 0.15s;
+}
+
+.a11y-sw.on {
+  background: #1b4b8f;
+  border-color: #1b4b8f;
+}
+
+.a11y-sw.on::after {
+  left: 26px;
+  background: #fff;
+}
+
+.a11y-ft {
+  padding: 9px 12px 11px;
+  text-align: center;
+  border-top: 1px solid #dde3ea;
+  background: #f7f9fc;
+}
+
+.a11y-ft button {
+  border: 1px solid #9fb0c6;
+  background: #fff;
+  padding: 4px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #333;
+}
+
+html.fs-1 {
+  zoom: 1.08;
+}
+
+html.fs-2 {
+  zoom: 1.16;
+}
+
+html.fs-3 {
+  zoom: 1.26;
+}
+
+html.hc,
+html.hc body {
+  background: #000 !important;
+}
+
+html.hc .main,
+html.hc .card,
+html.hc .notice,
+html.hc .banner,
+html.hc .serv,
+html.hc .special a,
+html.hc .login-box,
+html.hc table.gov th,
+html.hc table.gov td {
+  background: #000 !important;
+  border-color: #ffdd00 !important;
+}
+
+html.hc .main,
+html.hc .main p,
+html.hc .main h1,
+html.hc .main h2,
+html.hc .main li,
+html.hc .main span,
+html.hc .main td,
+html.hc .main th,
+html.hc .main b,
+html.hc .main time,
+html.hc .main div {
+  color: #ffffff !important;
+}
+
+html.hc a,
+html.hc .sec-t,
+html.hc .card-h b,
+html.hc .notice-h,
+html.hc .brand-t,
+html.hc .nav a,
+html.hc .leader b {
+  color: #ffdd00 !important;
+}
+
+html.hc .head,
+html.hc .nav,
+html.hc .foot,
+html.hc .topbar,
+html.hc .card-h,
+html.hc .notice-h {
+  background: #000 !important;
+  border-color: #ffdd00 !important;
+}
+
+html.hc .nav a.on {
+  background: #333 !important;
+}
+
+html.hc .emblem {
+  filter: grayscale(1) brightness(1.5);
+}
+
+html.hc .ticker {
+  background: #000 !important;
+  border-color: #ffdd00 !important;
+}
+
+html.hc .ticker-label {
+  background: #ffdd00 !important;
+  color: #000 !important;
+}
+
+html.hc .ticker-body span {
+  color: #ffdd00 !important;
+}
+
+html.hc .btn,
+html.hc button {
+  background: #000 !important;
+  color: #ffdd00 !important;
+  border: 1px solid #ffdd00 !important;
+}
+
+html.elder {
+  zoom: 1.18;
+}
+
+html.elder body {
+  font-size: 15px;
+}
+
+html.elder .main p,
+html.elder .art p {
+  font-size: 17px;
+  line-height: 2.05;
+}
+
+html.elder .card li,
+html.elder .notice li,
+html.elder .list-page li a {
+  font-size: 15px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+html.elder .nav a {
+  font-size: 16px;
+  line-height: 46px;
+}
+
+html.elder .ad-pop,
+html.elder .ad-pop2 {
+  display: none !important;
+}
+
+html.elder .ticker-body span {
+  animation: none;
+  position: static;
+  white-space: normal;
+  line-height: 1.5;
+  display: block;
+  padding: 6px 10px;
+  transform: none;
+}
+
+html.elder .ticker {
+  height: auto;
+}
+
+html.elder .ticker-body {
+  height: auto;
+}
+
+html.trad .brand-s {
+  letter-spacing: 0;
+}
+
+html.hc .ad-pop,
+html.hc .ad-pop2 {
+  display: none !important;
+}
+
+html.hc .a11y-panel {
+  background: #000 !important;
+  border-color: #ffdd00 !important;
+}
+
+html.hc .a11y-panel .a11y-row,
+html.hc .a11y-panel .a11y-hd {
+  background: #000 !important;
+  color: #ffdd00 !important;
+  border-color: #444 !important;
+}
+
+html.hc .a11y-seg button {
+  background: #000 !important;
+  color: #ffdd00 !important;
+  border-color: #ffdd00 !important;
+}
+
+html.hc .a11y-seg button.on {
+  background: #ffdd00 !important;
+  color: #000 !important;
+}
