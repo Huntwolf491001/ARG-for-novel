@@ -129,12 +129,12 @@
   var panel = document.createElement('div');
   panel.className = 'a11y-panel';
   panel.innerHTML =
-    '<div class="a11y-hd"><span style="font-size:13px;">辅助工具</span><span class="a11y-x">&times;</span></div>' +
+    '<div class="a11y-hd"><span style="font-size:13px;">辅助工具</span><button type="button" class="a11y-x" aria-label="关闭辅助工具">&times;</button></div>' +
     '<div class="a11y-row"><span>字体大小</span><span class="a11y-seg">' +
     '<button data-fs="0">标准</button><button data-fs="1">大</button><button data-fs="2">特大</button></span></div>' +
-    '<div class="a11y-row"><span>高对比度</span><span class="a11y-sw" data-k="hc"></span></div>' +
-    '<div class="a11y-row"><span>适老模式</span><span class="a11y-sw" data-k="elder"></span></div>' +
-    '<div class="a11y-row"><span>繁体字</span><span class="a11y-sw" data-k="trad"></span></div>' +
+    '<div class="a11y-row"><span>高对比度</span><button type="button" class="a11y-sw" data-k="hc" aria-label="高对比度" aria-pressed="false"></button></div>' +
+    '<div class="a11y-row"><span>适老模式</span><button type="button" class="a11y-sw" data-k="elder" aria-label="适老模式" aria-pressed="false"></button></div>' +
+    '<div class="a11y-row"><span>繁体字</span><button type="button" class="a11y-sw" data-k="trad" aria-label="繁体字" aria-pressed="false"></button></div>' +
     '<div class="a11y-ft"><button class="a11y-reset">恢复默认</button></div>';
   document.body.appendChild(panel);
 
@@ -147,6 +147,7 @@
     for (var j = 0; j < sws.length; j++) {
       var k = sws[j].getAttribute('data-k');
       sws[j].className = 'a11y-sw' + (cfg[k] ? ' on' : '');
+      sws[j].setAttribute('aria-pressed', cfg[k] ? 'true' : 'false');
     }
   }
 

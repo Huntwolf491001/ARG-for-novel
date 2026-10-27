@@ -38,6 +38,15 @@
   padding: 0 3px;
 }
 
+.a11y-hd .a11y-x {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
 .a11y-row {
   display: flex;
   align-items: center;
@@ -84,6 +93,7 @@
   background: #e9edf3;
   position: relative;
   cursor: pointer;
+  padding: 0;
 }
 
 .a11y-sw::after {

@@ -29,7 +29,7 @@
   var pop = document.createElement('div');
   pop.className = 'ad-pop';
   pop.innerHTML =
-    '<div class="ad-hd"><span>反诈提醒</span><span class="ad-x" title="关闭">&times;</span></div>' +
+    '<div class="ad-hd"><span>反诈提醒</span><button type="button" class="ad-x" aria-label="关闭反诈提醒">&times;</button></div>' +
     '<div class="ad-bd"><b></b><p></p></div>' +
     '<div class="ad-nav">' +
     ADS.map(function () { return '<i></i>'; }).join('') +
@@ -63,12 +63,12 @@
   var pop2 = document.createElement('div');
   pop2.className = 'ad-pop2';
   pop2.innerHTML =
-    '<div class="ad-hd"><span>便民提示</span><span class="ad-x" title="关闭">&times;</span></div>' +
-    '<div class="ad-bd"><p>网上办事大厅已开通 32 项业务，户籍、出入境、交管业务均可预约办理。</p></div>';
+    '<div class="ad-hd"><span>便民提示</span><button type="button" class="ad-x" aria-label="关闭便民提示">&times;</button></div>' +
+    '<div class="ad-bd"><p>户籍、出入境、交管业务可通过办事服务栏目查阅办理指南。</p></div>';
   document.body.appendChild(pop2);
 
   function close(node) {
-    clearInterval(timer);
+    if (node === pop) clearInterval(timer);
     node.parentNode.removeChild(node);
     if (!document.querySelector('.ad-pop') && !document.querySelector('.ad-pop2')) {
       try {
@@ -84,6 +84,7 @@
   var tipTimer = null;
 
   document.addEventListener('click', function (e) {
+    if (e.defaultPrevented) return;
     var a = e.target.closest ? e.target.closest('a[href="#"]') : null;
     if (!a) return;
     e.preventDefault();

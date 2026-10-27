@@ -18,15 +18,15 @@
 
 <header class="head">
   <div class="wrap">
-    <div class="brand">
-      <img class="emblem" src="/assets/img/emblem.jpg" alt="狰州市公安局">
+    <a class="brand" href="/index.html" aria-label="狰州市公安局首页">
+      <img class="emblem" src="/assets/img/emblem.jpg" alt="">
       <div>
         <div class="brand-t">狰州市公安局</div>
         <div class="brand-s">ZHENGZHOU PUBLIC SECURITY BUREAU</div>
       </div>
-    </div>
-    <form class="search" onsubmit="return false">
-      <input type="text" placeholder="请输入关键字">
+    </a>
+    <form class="search" action="/search.html" method="get" role="search">
+      <input type="search" name="q" aria-label="搜索网站内容" placeholder="请输入关键字" required>
       <button type="submit">搜索</button>
     </form>
   </div>
@@ -54,8 +54,9 @@
   <main class="main">
     <h1 class="sec-t">局长信箱</h1>
 
-    <p style="font-size:13px;color:#8a929c;margin-bottom:14px;">带 * 为必填项。本渠道为形式受理，紧急情况请直接拨打 110。</p>
+    <p style="font-size:13px;color:#8a929c;margin-bottom:14px;">在线提交功能暂未开通，以下表格仅供预览。紧急情况请直接拨打 110。</p>
 
+    <form class="contact-preview">
     <table class="gov" style="margin-bottom:0;">
       <tr><th>姓　　名 *</th><td><input type="text" style="width:220px;height:26px;border:1px solid #c9d2de;padding:0 6px;font-size:13px;"></td></tr>
       <tr><th>联系电话 *</th><td><input type="text" style="width:220px;height:26px;border:1px solid #c9d2de;padding:0 6px;font-size:13px;"></td></tr>
@@ -70,11 +71,12 @@
     </table>
 
     <div style="margin-top:14px;">
-      <button style="height:30px;padding:0 22px;border:0;background:#1b4b8f;color:#fff;font-size:13px;font-family:inherit;cursor:pointer;">提　交</button>
-      <button style="height:30px;padding:0 22px;border:1px solid #c9d2de;background:#f3f6fa;color:#333;font-size:13px;font-family:inherit;cursor:pointer;margin-left:8px;">重　填</button>
+      <button type="button" disabled style="height:30px;padding:0 22px;border:0;background:#1b4b8f;color:#fff;font-size:13px;font-family:inherit;cursor:pointer;">暂未开通</button>
+      <button type="reset" style="height:30px;padding:0 22px;border:1px solid #c9d2de;background:#f3f6fa;color:#333;font-size:13px;font-family:inherit;cursor:pointer;margin-left:8px;">重　填</button>
     </div>
 
-    <p style="font-size:12px;color:#8a929c;margin-top:14px;">您的留言将在 5 个工作日内答复。请勿在留言中填写银行卡号、密码等敏感信息。</p>
+    </form>
+    <p style="font-size:12px;color:#8a929c;margin-top:14px;">请勿填写银行卡号、密码等敏感信息。如需联系，请查看<a href="/contact-us.html">联系方式</a>。</p>
   </main>
 </div>
 

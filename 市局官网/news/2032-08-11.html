@@ -18,15 +18,15 @@
 
 <header class="head">
   <div class="wrap">
-    <div class="brand">
-      <img class="emblem" src="/assets/img/emblem.jpg" alt="狰州市公安局">
+    <a class="brand" href="/index.html" aria-label="狰州市公安局首页">
+      <img class="emblem" src="/assets/img/emblem.jpg" alt="">
       <div>
         <div class="brand-t">狰州市公安局</div>
         <div class="brand-s">ZHENGZHOU PUBLIC SECURITY BUREAU</div>
       </div>
-    </div>
-    <form class="search" onsubmit="return false">
-      <input type="text" placeholder="请输入关键字">
+    </a>
+    <form class="search" action="/search.html" method="get" role="search">
+      <input type="search" name="q" aria-label="搜索网站内容" placeholder="请输入关键字" required>
       <button type="submit">搜索</button>
     </form>
   </div>
