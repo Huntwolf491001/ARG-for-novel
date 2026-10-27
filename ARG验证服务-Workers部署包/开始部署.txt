@@ -1,0 +1,11 @@
+﻿ARG 验证服务 · Cloudflare Workers 部署包
+
+本压缩包包含服务源码、D1 数据库迁移、管理后台和 Workers 目标站点适配器。
+
+1. 完整解压压缩包。
+2. 进入 arg-auth 文件夹，在终端运行 npm install。
+3. 打开 arg-auth/README.md，按“部署验证服务”逐步创建 D1 数据库、部署 Worker 和配置 Secrets。
+4. 运行 node scripts/admin-hash.js，按提示输入管理员账号 admin 和你指定的管理员密码，再将生成的盐与摘要存入 Cloudflare Secrets。包内没有管理员密码。
+
+需要 Node.js、npm 和 Cloudflare 账户。密码哈希计算所需 CPU 配置可能需要 Workers 付费计划。
+目标站点若使用 Cloudflare Pages，需要另行开发 Pages 适配器；本包中的目标站点适配器用于 Workers。

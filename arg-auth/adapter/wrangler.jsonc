@@ -1,0 +1,13 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "arg-protected-site",
+  "main": "index.js",
+  "compatibility_date": "2026-10-26",
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": true },
+  "vars": {
+    "AUTH_ORIGIN": "https://REPLACE-AUTH.workers.dev",
+    "SITE_ORIGIN": "https://REPLACE-SITE.workers.dev",
+    "SITE_ID": "police",
+    "PROTECTED_PREFIX": "/archive/"
+  }
+}
