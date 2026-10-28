@@ -28,7 +28,7 @@ async function readJson(request) {
   return JSON.parse(text);
 }
 async function issueTicket(site) {
-  const token = await sign({type:'ticket',site:site.id,dest:site.destination,exp:now()+60}, site.key);
+  const token = await sign({type:'ticket',site:site.id,dest:site.destination,nonce:random(),exp:now()+60}, site.key);
   return {redirect:site.origin + '/_arg/callback?ticket=' + encodeURIComponent(token)};
 }
 async function logAttempt(request, env, siteId, usernameEnc, success) {
@@ -52,12 +52,37 @@ async function handler(request, env) {
   const url = new URL(request.url), path = url.pathname;
   if (!configured(env)) return json({error:'管理员 Secret 尚未配置'}, 503);
   if (path.startsWith('/api/')) {
-    if (request.method === 'POST' && !path.startsWith('/api/player/') && request.headers.get('origin') !== url.origin) return json({error:'来源不允许'}, 403);
+    if (request.method === 'POST' && !path.startsWith('/api/player/') && !path.startsWith('/api/site/') && request.headers.get('origin') !== url.origin) return json({error:'来源不允许'}, 403);
+    if (path.startsWith('/api/site/') && request.method === 'POST') {
+      const d=await readJson(request);
+      if(!validId(d.site||'') || !validProof(d.token)) return json({error:'无效请求'},400);
+      const site=await env.DB.prepare('SELECT * FROM sites WHERE id = ?').bind(d.site).first();
+      if(!site)return json({error:'站点不存在'},403);
+      const key=await decryptAccount(site.signing_key,env.ACCOUNT_KEY);
+      const type=path==='/api/site/redeem'?'ticket':'site';
+      if(!['/api/site/redeem','/api/site/check','/api/site/logout'].includes(path))return json({error:'接口不存在'},404);
+      const token=await verify(d.token,key,type,site.id);
+      if(!token || !Number.isFinite(token.exp))return json({error:'凭据无效'},403);
+      const tokenKey=await accountLookup(type+'\u0000'+d.token,env.ACCOUNT_KEY);
+      if(path==='/api/site/redeem'){
+        if(typeof token.nonce!=='string' || !safeDestination(token.dest,site.prefix))return json({error:'票据无效'},403);
+        await env.DB.prepare('DELETE FROM token_revocations WHERE expires_at <= ?').bind(now()).run();
+        const result=await env.DB.prepare('INSERT OR IGNORE INTO token_revocations (token_key,expires_at) VALUES (?,?)').bind(tokenKey,token.exp).run();
+        if(!Number(result.meta?.changes ?? result.changes))return json({error:'票据已使用'},403);
+        return json({session:await sign({type:'site',site:site.id,nonce:random(),exp:now()+28800},key)});
+      }
+      if(path==='/api/site/logout'){
+        await env.DB.prepare('INSERT OR IGNORE INTO token_revocations (token_key,expires_at) VALUES (?,?)').bind(tokenKey,token.exp).run();
+        return json({ok:true});
+      }
+      if(await env.DB.prepare('SELECT token_key FROM token_revocations WHERE token_key = ?').bind(tokenKey).first())return json({error:'会话已撤销'},403);
+      return json({ok:true});
+    }
     if (path === '/api/admin/login' && request.method === 'POST') {
       if (!await rate(request, env, 'admin')) return json({error:'尝试次数过多，请稍后再试'}, 429);
       const data = await readJson(request);
       if (!validUser(data.username) || !validPass(data.password) || !await equal(await hashPassword(data.username,env.ADMIN_PASSWORD_SALT), env.ADMIN_USERNAME_HASH) || !await equal(await hashPassword(data.password,env.ADMIN_PASSWORD_SALT), env.ADMIN_PASSWORD_HASH)) return json({error:'账号或密码错误'}, 401);
-      const token = await sign({type:'admin', exp:now()+3600}, env.ADMIN_SESSION_KEY);
+      const token = await sign({type:'admin', nonce:random(), exp:now()+3600}, env.ADMIN_SESSION_KEY);
       return json({ok:true}, 200, {'set-cookie':sessionCookie(token, 3600)});
     }
     if (path === '/api/player/login' && request.method === 'POST') {
@@ -106,8 +131,15 @@ async function handler(request, env) {
       await logAttempt(request,env,site.id,proof.username_enc,true);
       return json(await issueTicket({...site,key:await decryptAccount(site.signing_key,env.ACCOUNT_KEY)}));
     }
-    if (!await verify(cookie(request, 'arg_admin'), env.ADMIN_SESSION_KEY, 'admin')) return json({error:'请先以管理员身份登录'}, 401);
-    if (path === '/api/admin/logout' && request.method === 'POST') return json({ok:true}, 200, {'set-cookie':sessionCookie('',0)});
+    const adminToken=cookie(request, 'arg_admin');
+    const admin=await verify(adminToken, env.ADMIN_SESSION_KEY, 'admin');
+    if(!admin || !Number.isFinite(admin.exp)) return json({error:'请先以管理员身份登录'}, 401);
+    const adminKey=await accountLookup('admin\u0000'+adminToken,env.ACCOUNT_KEY);
+    if(await env.DB.prepare('SELECT token_key FROM token_revocations WHERE token_key = ?').bind(adminKey).first())return json({error:'请先以管理员身份登录'},401);
+    if (path === '/api/admin/logout' && request.method === 'POST') {
+      await env.DB.prepare('INSERT OR IGNORE INTO token_revocations (token_key,expires_at) VALUES (?,?)').bind(adminKey,admin.exp).run();
+      return json({ok:true}, 200, {'set-cookie':sessionCookie('',0)});
+    }
     if (path === '/api/admin/sites' && request.method === 'GET') {
       const sites = await env.DB.prepare('SELECT id, name, origin, prefix, destination, signing_key FROM sites ORDER BY created_at DESC').all();
       return json({sites:await Promise.all(sites.results.map(async site => ({...site,signing_key:await decryptAccount(site.signing_key,env.ACCOUNT_KEY)})))});

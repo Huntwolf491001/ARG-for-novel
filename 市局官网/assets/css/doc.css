@@ -161,9 +161,9 @@ h1.doc-t {
 }
 
 .letter-paper {
-  background:
-    repeating-linear-gradient(to bottom, transparent 0 37px, rgba(120, 140, 175, 0.18) 37px 38px);
-  padding: 6px 4px 20px;
+  background: #ede6d8 url("/archive/手写纸张扫描底图.png") center / 100% 100% no-repeat;
+  padding: 38px clamp(20px, 6%, 48px) 48px;
+  box-shadow: 0 2px 8px rgba(50, 40, 25, .2);
 }
 
 table.doc-tb {

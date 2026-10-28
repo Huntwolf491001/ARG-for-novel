@@ -4,6 +4,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { readFileSync } from 'node:fs';
 import auth from '../src/index.js';
 import gate from '../adapter/index.js';
+import pagesGate from '../pages-adapter/_worker.js';
 import { random, hashPassword } from '../src/crypto.js';
 
 function database() {
@@ -13,9 +14,33 @@ function database() {
   db.exec(readFileSync(new URL('../migrations/0002_puzzle_credentials.sql', import.meta.url),'utf8'));
   db.exec(readFileSync(new URL('../migrations/0003_account_display.sql', import.meta.url),'utf8'));
   db.exec(readFileSync(new URL('../migrations/0004_event_ip.sql', import.meta.url),'utf8'));
+  db.exec(readFileSync(new URL('../migrations/0005_token_revocations.sql', import.meta.url),'utf8'));
   return {raw:db,async batch(statements){db.exec('BEGIN');try{for(const statement of statements)await statement.run();db.exec('COMMIT')}catch(error){db.exec('ROLLBACK');throw error}},prepare(sql) { const statement=db.prepare(sql); return {async first(){return statement.get()||null},async all(){return {results:statement.all()}},async run(){return statement.run()},bind(...args) {return {async first(){return statement.get(...args)||null},async all(){return {results:statement.all(...args)}},async run(){return statement.run(...args)}}}}}};
 }
 const origin = 'https://auth.example';
+test('Pages ticket is single-use and site and admin logout revoke copied cookies',async(t)=>{
+  const salt=random(16),password='test-admin-password';
+  const env={DB:database(),ADMIN_PASSWORD_SALT:salt,ADMIN_USERNAME_HASH:await hashPassword('admin',salt),ADMIN_PASSWORD_HASH:await hashPassword(password,salt),ACCOUNT_KEY:'account-secret-012345678901234567890123',ADMIN_SESSION_KEY:'session-secret-012345678901234567890123',LOGIN_LIMIT:{async limit(){return {success:true}}},ASSETS:{async fetch(){return new Response('public')}}};
+  let r=await auth.fetch(request('/api/admin/login',{method:'POST',body:{username:'admin',password}}),env);
+  const admin=r.headers.get('set-cookie').split(';')[0];
+  const site={id:'police',name:'Police',origin:'https://site.example',prefix:'/archive/',destination:'/archive/index.html'};
+  assert.equal((await auth.fetch(request('/api/admin/sites',{method:'POST',body:site,session:admin}),env)).status,200);
+  assert.equal((await auth.fetch(request('/api/admin/accounts',{method:'POST',body:{site:site.id,username:'reader',password:'player-password'},session:admin}),env)).status,200);
+  const registered=(await (await auth.fetch(request('/api/admin/sites',{session:admin}),env)).json()).sites[0];
+  const gateEnv={SITE_ID:site.id,SITE_KEY:registered.signing_key,SITE_ORIGIN:site.origin,AUTH_ORIGIN:origin,PROTECTED_PREFIX:site.prefix,LOGIN_PATH:'/login.html',ASSETS:{async fetch(){return new Response('protected')}}};
+  t.mock.method(globalThis,'fetch',(url,options)=>auth.fetch(new Request(url,options),env));
+  r=await auth.fetch(request('/api/player/login?site=police',{method:'POST',source:site.origin,body:{site:site.id,username:'reader',password:'player-password'}}),env);
+  const callback=(await r.json()).redirect;
+  r=await pagesGate.fetch(new Request(callback),gateEnv);assert.equal(r.status,302);
+  const session=r.headers.get('set-cookie').split(';')[0];
+  assert.equal((await pagesGate.fetch(new Request(callback),gateEnv)).status,403);
+  assert.equal((await pagesGate.fetch(new Request(site.origin+site.destination,{headers:{cookie:session}}),gateEnv)).status,200);
+  assert.equal((await pagesGate.fetch(new Request(site.origin+'/_arg/logout',{method:'POST',headers:{cookie:session,origin:'https://evil.example'}}),gateEnv)).status,403);
+  assert.equal((await pagesGate.fetch(new Request(site.origin+'/_arg/logout',{method:'POST',headers:{cookie:session,origin:site.origin}}),gateEnv)).status,302);
+  assert.equal((await pagesGate.fetch(new Request(site.origin+site.destination,{headers:{cookie:session}}),gateEnv)).status,302);
+  assert.equal((await auth.fetch(request('/api/admin/logout',{method:'POST',session:admin}),env)).status,200);
+  assert.equal((await auth.fetch(request('/api/admin/sites',{session:admin}),env)).status,401);
+});
 function request(path, {method='GET',body,session,source=origin,ip} = {}) {
   const headers = {};
   if (method === 'POST' || method === 'OPTIONS') headers.origin=source;

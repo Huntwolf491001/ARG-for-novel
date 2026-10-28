@@ -23,6 +23,13 @@ function validOrigin(value) {
 }
 function protectedPath(path,prefix){return prefix==='/' || path===prefix.slice(0,-1) || path.startsWith(prefix);}
 function cookie(request){return (request.headers.get('cookie')||'').split(';').map(s=>s.trim()).find(s=>s.startsWith('arg_site='))?.slice(9)||'';}
+async function authRequest(env,action,token){
+  try {
+    const response=await fetch(env.AUTH_ORIGIN+'/api/site/'+action,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({site:env.SITE_ID,token})});
+    if(response.status>=500 || response.status===429)throw new Error('Authentication service unavailable');
+    return response.ok ? await response.json() : null;
+  } catch {throw new Error('Authentication service unavailable');}
+}
 function redirect(location, setCookie) {
   const headers={'location':location,'cache-control':'no-store','referrer-policy':'no-referrer'};
   if(setCookie)headers['set-cookie']=setCookie;
@@ -38,8 +45,17 @@ export default {
       if(!ticket || typeof ticket.dest!=='string' || !protectedPath(ticket.dest,prefix) || ticket.dest.includes('%') || ticket.dest.includes('\\'))return new Response('Invalid or expired login ticket.',{status:403,headers:{'cache-control':'no-store'}});
       const dest=new URL(ticket.dest,env.SITE_ORIGIN);
       if(dest.origin!==env.SITE_ORIGIN || dest.pathname!==ticket.dest)return new Response('Invalid destination.',{status:403});
-      const session=await sign({type:'site',site:env.SITE_ID,exp:now()+28800},env.SITE_KEY);
-      return redirect(dest.href,`arg_site=${session}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=28800`);
+      let result;try{result=await authRequest(env,'redeem',url.searchParams.get('ticket')||'');}catch{return new Response('Authentication service unavailable.',{status:503,headers:{'cache-control':'no-store'}});}
+      if(!result || !await verify(result.session||'',env.SITE_KEY,'site',env.SITE_ID))return new Response('Login ticket has already been used or is invalid.',{status:403,headers:{'cache-control':'no-store','referrer-policy':'no-referrer'}});
+      return redirect(dest.href,`arg_site=${result.session}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=28800`);
+    }
+    if(url.pathname==='/_arg/logout'){
+      if(request.method!=='POST' || request.headers.get('origin')!==env.SITE_ORIGIN)return new Response('Method or origin not allowed.',{status:403,headers:{'cache-control':'no-store'}});
+      const token=cookie(request);
+      if(await verify(token,env.SITE_KEY,'site',env.SITE_ID)){
+        try{await authRequest(env,'logout',token);}catch{return new Response('Authentication service unavailable. Please try again.',{status:503,headers:{'cache-control':'no-store'}});}
+      }
+      return redirect(env.SITE_ORIGIN+(env.LOGIN_PATH||'/'), 'arg_site=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0');
     }
     let path;
     try {
@@ -48,7 +64,11 @@ export default {
       if(path.includes('\\') || path.split('/').some(s=>s==='.'||s==='..'))throw 0;
     } catch {return new Response('Invalid path.',{status:400});}
     const restricted=protectedPath(path,prefix);
-    if(restricted && !await verify(cookie(request),env.SITE_KEY,'site',env.SITE_ID)){
+    let allowed=false;
+    if(restricted && await verify(cookie(request),env.SITE_KEY,'site',env.SITE_ID)){
+      try{allowed=!!await authRequest(env,'check',cookie(request));}catch{return new Response('Authentication service unavailable.',{status:503,headers:{'cache-control':'no-store'}});}
+    }
+    if(restricted && !allowed){
       if(env.LOGIN_PATH){
         const login=new URL(env.LOGIN_PATH,env.SITE_ORIGIN);
         if(login.origin!==env.SITE_ORIGIN || !env.LOGIN_PATH.startsWith('/') || env.LOGIN_PATH.startsWith('//') || protectedPath(login.pathname,prefix))return new Response('Invalid login path.',{status:503});

@@ -1,0 +1,1 @@
+globalThis.ForumAuthConfig={"version":1,"algorithm":"PBKDF2-SHA256","iterations":210000,"username":{"salt":"0e6b02941f82218ca4247a338bbfd02aa11e98158bb9df3f","hash":"93ef69516e6052ebb0dda8535e6a1fcf075624836738fc7cb32aa113878386f7"},"password":{"salt":"a2ebd8c381f200c488e8c403dc4acb9578b3894017ae9848","hash":"6011d7ccee6d74227726e7d5377a8026ad6c3c3f9bdd77d42c56344e916e3514"}};
