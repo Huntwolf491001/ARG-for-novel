@@ -8,28 +8,22 @@
 <link rel="stylesheet" href="/assets/css/archive.css">
 </head>
 <body>
-
-<div class="pf-top">
-  <b>狰州市公安局　内部信息平台</b>
-  <span>当前用户：00417</span>
-</div>
-
-<div class="pf-bar">
-  <span><a href="/archive/index.html">返回首页</a>　|　我的案卷</span>
-  <span>2032-10-25　18:20</span>
-</div>
-
-<div class="pf-wrap">
-
-  <div class="pf-card">
-    <div class="pf-card-h">我的案卷（共 0 件）</div>
-    <div class="pf-card-b">
-      <p class="pf-note">该账号名下无在办案卷。</p>
-      <p class="pf-note">历史案卷已按档案管理规定移交，如需调阅请到档案室办理。</p>
-    </div>
-  </div>
-
-</div>
-
+<div id="app" style="padding:80px 20px;text-align:center;color:#5b7a9c;font-family:SimSun,serif;font-size:13px;letter-spacing:1px;">正在校验访问权限</div>
+<script>
+(function(){
+var D="AuHBnQxBmA95Xl-xtHEFbk3eGGU4iLCTy1Q3FaFLUpZCoYLqSUukF6fQ9j-FuSlmOPlGwl-PF4rAFKJhoetfSKHFZtgLT-J0zI0LonIEmfdBUga92S-50xSLrhSrHnPAO8h33tq5GL7UQINfkqceMjhtiOmzAjs0QmQ0difzEVDGBNVwXEihO_xaGNQhUJqX5h5MeRfusY80ewM0m4B5cutT3H33AbkOrFqimSQnS0vLTjszSaGZK_T8OYCy1fv7Iy1QSrLq1xkG8w4rRHDuce2CU3lxI_MWu43evu8ggzGQPlaX09J8PZFsZOi-A_YJdaudGiKe9n-jVaakfWu480zEGoRaAAROIKiMoFCJ4z2jYVY4UVfRzug_f5jiVCEykaUQuN0fkIo6aUhJzjWL9CE0vOF9VWD343VNrNXOkP4QuHjXxsIfS5wKJeakV30mKD__VDkrFPGO6DgKAateE5ICKKeS61C-yyc0fCPc1nDsqAQ20srHHFlEMJAPwZGm_dyS5qTTwkV9pCREXdP2491ZD4GwFoPakoJg-sZEYcRuNIRXJc-5SVkkJ-6tCY5u1w5mcJG6AThxL82JclgoM4V39qsxfK9xCLrEcJIRXHq-1XDQecatU8SpnL9mAXf6D1mPuffQDTFRZ57jHgEKpPIrq6nvJCjz_XqM6ujsJlatur4lCv9KX-7Fj_NF-y0M485wMI8TeEkcyJpJr7uggj9YgSnV7HXUpAeQQ-g5vuEiO4rAqGgjP3JbMFQsxenZ8djNkEOiDZbnpICUolYL6Enb9g6_M3vNgpZBf4jktMPTyOVDfaoONOpT8qQbeWcrwfYOq9giCdVaHtUwOQd1",V="Dmym7U1Jm6t1UPEs";
+function u(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";var b=atob(s),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
+var raw=sessionStorage.getItem("arg_key");
+if(!raw){location.replace("/login.html");return;}
+crypto.subtle.importKey("raw",u(raw),{name:"AES-GCM"},false,["decrypt"]).then(function(k){
+return crypto.subtle.decrypt({name:"AES-GCM",iv:u(V)},k,u(D));
+}).then(function(pt){
+document.getElementById("app").outerHTML=new TextDecoder().decode(pt);
+}).catch(function(){
+sessionStorage.removeItem("arg_key");
+location.replace("/login.html");
+});
+})();
+</script>
 </body>
 </html>

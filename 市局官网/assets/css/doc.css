@@ -119,10 +119,16 @@ h1.doc-t {
 .redact {
   display: inline-block;
   height: 15px;
+  line-height: 15px;
   background: #1c1c1c;
   vertical-align: -2px;
-  margin: 0 2px;
+  margin: -1px 2px;
+  padding: 0 3px;
   border-radius: 1px;
+  color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  white-space: nowrap;
 }
 
 .sign {
