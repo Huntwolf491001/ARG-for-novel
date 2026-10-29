@@ -59,6 +59,22 @@ async function handler(request, env) {
       const site=await env.DB.prepare('SELECT * FROM sites WHERE id = ?').bind(d.site).first();
       if(!site)return json({error:'站点不存在'},403);
       const key=await decryptAccount(site.signing_key,env.ACCOUNT_KEY);
+      // A site adapter may manage only its own login accounts. The signing
+      // key remains in its server secret; browser sessions are never enough.
+      if(path==='/api/site/accounts'){
+        const proof=await verify(d.token,key,'account-management',site.id);
+        if(!proof||proof.action!=='upsert'||typeof proof.nonce!=='string'||!Number.isFinite(proof.exp)||proof.exp>now()+60||!validUser(d.username)||!validPass(d.password))return json({error:'管理凭据无效'},403);
+        const payloadHash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify({username:d.username,password:d.password}))))).map(b=>b.toString(16).padStart(2,'0')).join('');
+        if(!await equal(payloadHash,proof.payloadHash||''))return json({error:'管理请求内容不匹配'},403);
+        if(!await rate(request,env,'site-accounts:'+site.id))return json({error:'操作过于频繁，请稍后重试'},429);
+        const replayKey=await accountLookup('account-management\u0000'+d.token,env.ACCOUNT_KEY);
+        await env.DB.prepare('DELETE FROM token_revocations WHERE expires_at <= ?').bind(now()).run();
+        const used=await env.DB.prepare('INSERT OR IGNORE INTO token_revocations (token_key,expires_at) VALUES (?,?)').bind(replayKey,proof.exp).run();
+        if(!Number(used.meta?.changes??used.changes))return json({error:'管理请求已使用'},403);
+        const salt=random(16),hash=await hashPassword(d.password,salt),usernameKey=await accountLookup(site.id+'\u0000'+d.username,env.ACCOUNT_KEY);
+        await env.DB.prepare('INSERT INTO accounts (site_id,username_key,salt,password_hash,username_enc) VALUES (?,?,?,?,?) ON CONFLICT(site_id,username_key) DO UPDATE SET salt=excluded.salt,password_hash=excluded.password_hash,username_enc=excluded.username_enc').bind(site.id,usernameKey,salt,hash,await encryptAccount(d.username,env.ACCOUNT_KEY)).run();
+        return json({ok:true});
+      }
       const type=path==='/api/site/redeem'?'ticket':'site';
       if(!['/api/site/redeem','/api/site/check','/api/site/logout'].includes(path))return json({error:'接口不存在'},404);
       const token=await verify(d.token,key,type,site.id);

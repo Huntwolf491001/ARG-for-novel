@@ -1,5 +1,5 @@
 ﻿$ErrorActionPreference = 'Stop'
-$authOrigin = 'https://arg-auth-683dc0f14848.yangyi42905341.workers.dev'
+$authOrigin = 'https://auth.arg-auth-683dc0f14848.top'
 $siteOrigin = 'https://zhengzhou-police.pages.dev'
 $project = 'zhengzhou-police'
 $siteId = 'city-bureau'

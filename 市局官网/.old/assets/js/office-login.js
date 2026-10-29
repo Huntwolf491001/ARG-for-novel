@@ -1,5 +1,5 @@
 (function () {
-  var service = 'https://arg-auth-683dc0f14848.yangyi42905341.workers.dev';
+  var service = 'https://auth.arg-auth-683dc0f14848.top';
   var site = 'city-bureau';
   var el = function (id) { return document.getElementById(id); };
   var steps = [el('step1'), el('step2'), el('step3a'), el('step3b'), el('appealBox')];
