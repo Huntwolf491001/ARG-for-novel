@@ -1,0 +1,8 @@
+﻿Cloudflare 当前版本整理包：police
+线上地址：https://zhengzhou-police.pages.dev/
+
+双击 preview.cmd：打开当前线上版本，使用线上登录和云端数据。
+双击 preview-local.cmd：以 Windows 自带 PowerShell 启动本机静态文件预览；保持启动窗口开启。
+本机预览不运行 Cloudflare Worker、验证服务、D1 或线上会话，不可用于验证登录、安全保护、管理操作或数据同步。关闭窗口结束本地预览。
+完整部署需要 Cloudflare Pages / Worker、绑定、独立数据库和 Secrets；包内不含密码、密钥、Cloudflare 登录凭据或云数据库数据，也不包含当前浏览器 IndexedDB 中新增的本机数据。
+本包依据当前本机项目整理，已抽样比较线上公开页面及脚本；未能逐文件证明 Worker 服务端代码和所有资源与线上完全一致。
